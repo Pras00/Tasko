@@ -20,13 +20,16 @@ import {
   LayoutDashboard,
   FolderKanban,
   Loader2,
+  UserPen,
 } from "lucide-react"
 import { toast } from "sonner"
+import { EditProfileDialog } from "@/components/settings/edit-profile-dialog"
 
 export function UserNav() {
   const { data: session } = useSession()
   const router = useRouter()
   const [isLoggingOut, setIsLoggingOut] = React.useState(false)
+  const [editProfileOpen, setEditProfileOpen] = React.useState(false)
 
   const user = session?.user
 
@@ -130,6 +133,14 @@ export function UserNav() {
           <span className="flex-1">Account Settings</span>
         </DropdownMenuItem>
 
+        <DropdownMenuItem
+          onClick={() => setEditProfileOpen(true)}
+          className="cursor-pointer gap-2.5 rounded-xl text-xs font-medium py-2 px-2.5 hover:bg-accent focus:bg-accent transition-colors"
+        >
+          <UserPen className="w-4 h-4 text-emerald-500 shrink-0" />
+          <span className="flex-1">Change Profile Name</span>
+        </DropdownMenuItem>
+
         <DropdownMenuSeparator className="my-1" />
 
         {/* Logout Action */}
@@ -146,6 +157,14 @@ export function UserNav() {
           <span>{isLoggingOut ? "Signing out..." : "Log out"}</span>
         </DropdownMenuItem>
       </DropdownMenuContent>
+
+      <EditProfileDialog
+        open={editProfileOpen}
+        onOpenChange={setEditProfileOpen}
+        currentName={user?.name || ""}
+        email={user?.email || ""}
+        image={user?.image}
+      />
     </DropdownMenu>
   )
 }

@@ -1,6 +1,8 @@
 "use server"
 
 import { prisma } from "@/lib/prisma"
+import { auth } from "@/lib/auth"
+import { revalidatePath } from "next/cache"
 import * as bcrypt from "bcryptjs"
 import { z } from "zod"
 
@@ -69,6 +71,65 @@ export async function registerUser(
     return {
       success: false,
       message: "Something went wrong during registration. Please try again.",
+    }
+  }
+}
+
+const updateNameSchema = z.object({
+  name: z
+    .string()
+    .trim()
+    .min(2, "Name must be at least 2 characters")
+    .max(50, "Name cannot exceed 50 characters"),
+})
+
+export type UpdateProfileResponse = {
+  success: boolean
+  message: string
+  newName?: string
+}
+
+export async function updateProfileName(
+  name: string
+): Promise<UpdateProfileResponse> {
+  try {
+    const session = await auth()
+    if (!session?.user?.id) {
+      return {
+        success: false,
+        message: "You must be logged in to update your profile",
+      }
+    }
+
+    const validation = updateNameSchema.safeParse({ name })
+    if (!validation.success) {
+      return {
+        success: false,
+        message: validation.error.issues[0]?.message || "Invalid name provided",
+      }
+    }
+
+    const trimmedName = validation.data.name
+
+    const updatedUser = await prisma.user.update({
+      where: { id: session.user.id },
+      data: { name: trimmedName },
+    })
+
+    revalidatePath("/settings")
+    revalidatePath("/dashboard")
+    revalidatePath("/projects")
+
+    return {
+      success: true,
+      message: "Profile name updated successfully",
+      newName: updatedUser.name || trimmedName,
+    }
+  } catch (error) {
+    console.error("Update profile name error:", error)
+    return {
+      success: false,
+      message: "Failed to update profile name. Please try again.",
     }
   }
 }

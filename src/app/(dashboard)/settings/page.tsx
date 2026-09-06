@@ -1,24 +1,14 @@
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { ThemeToggle } from "@/components/theme-toggle"
 import { Label } from "@/components/ui/label"
-import { Badge } from "@/components/ui/badge"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { LogoutButton } from "@/components/settings/logout-button"
+import { ProfileEditor } from "@/components/settings/profile-editor"
 import { auth } from "@/lib/auth"
 import { User, Shield, Palette } from "lucide-react"
 
 export default async function SettingsPage() {
   const session = await auth()
   const user = session?.user
-
-  const initials = user?.name
-    ? user.name
-        .split(" ")
-        .map((n) => n[0])
-        .join("")
-        .toUpperCase()
-        .slice(0, 2)
-    : "TK"
 
   return (
     <div className="space-y-6 max-w-3xl">
@@ -41,26 +31,12 @@ export default async function SettingsPage() {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="flex items-center gap-4 p-4 rounded-xl bg-muted/30 border border-border/40">
-            <Avatar className="h-14 w-14 rounded-2xl border border-border/60 shadow-sm">
-              <AvatarImage src={user?.image || ""} alt={user?.name || "User"} />
-              <AvatarFallback className="bg-gradient-to-tr from-indigo-600 to-violet-600 text-white font-bold text-base rounded-2xl">
-                {initials}
-              </AvatarFallback>
-            </Avatar>
-            <div className="space-y-1 min-w-0 flex-1">
-              <div className="flex items-center gap-2 flex-wrap">
-                <h3 className="font-bold text-sm text-foreground">{user?.name || "Demo User"}</h3>
-                <Badge
-                  variant="outline"
-                  className="text-[10px] font-bold px-2 py-0.5 rounded-lg bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 border-indigo-500/20 uppercase"
-                >
-                  {(user as { role?: string })?.role || "Member"}
-                </Badge>
-              </div>
-              <p className="text-xs text-muted-foreground truncate">{user?.email || "demo@tasko.dev"}</p>
-            </div>
-          </div>
+          <ProfileEditor
+            initialName={user?.name}
+            email={user?.email}
+            image={user?.image}
+            role={(user as { role?: string })?.role}
+          />
         </CardContent>
       </Card>
 
