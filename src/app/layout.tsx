@@ -25,6 +25,16 @@ export const metadata: Metadata = {
   description:
     "Tasko is a joyful, modern SaaS project management platform inspired by Mini Trello. Plan work, track deadlines, assign tasks, and monitor project progress.",
   keywords: ["project management", "kanban", "trello", "task tracker", "productivity"],
+  icons: {
+    icon: [
+      { url: "/icon.svg", type: "image/svg+xml" },
+      { url: "/icon.png", sizes: "32x32", type: "image/png" },
+      { url: "/favicon.ico", sizes: "any" },
+    ],
+    apple: [
+      { url: "/apple-icon.png", sizes: "180x180", type: "image/png" },
+    ],
+  },
 };
 
 export default function RootLayout({

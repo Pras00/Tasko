@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <defs>
+    <linearGradient id="taskoBorder" x1="0" y1="0" x2="64" y2="64" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#6366f1" />
+      <stop offset="50%" stop-color="#8b5cf6" />
+      <stop offset="100%" stop-color="#f59e0b" />
+    </linearGradient>
+    <linearGradient id="taskoSun" x1="42" y1="10" x2="54" y2="22" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#fbbf24" />
+      <stop offset="100%" stop-color="#f59e0b" />
+    </linearGradient>
+  </defs>
+
+  <!-- Outer Rounded Container with Glowing Gradient Border -->
+  <rect x="2" y="2" width="60" height="60" rx="16" fill="url(#taskoBorder)" />
+  <rect x="5" y="5" width="54" height="54" rx="13" fill="#090d16" />
+
+  <!-- Stylized "T" Shaped Kanban Emblem -->
+  <!-- Top Horizontal Bar -->
+  <rect x="12" y="14" width="40" height="11" rx="5.5" fill="#6366f1" />
+
+  <!-- Vertical Column Stem -->
+  <rect x="26.5" y="25" width="11" height="25" rx="5.5" fill="#8b5cf6" />
+
+  <!-- Secondary Kanban Task Card on Left -->
+  <rect x="12" y="29" width="10.5" height="15" rx="4.5" fill="#818cf8" opacity="0.6" />
+
+  <!-- Celestial Sun Orb Accent -->
+  <circle cx="48" cy="16" r="5.5" fill="url(#taskoSun)" />
+  <circle cx="48" cy="16" r="2" fill="#ffffff" />
+</svg>
