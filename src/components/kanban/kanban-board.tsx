@@ -1,6 +1,7 @@
 "use client"
 
 import * as React from "react"
+import { createPortal } from "react-dom"
 import {
   DragDropContext,
   Droppable,
@@ -193,7 +194,7 @@ export function KanbanBoard({
           return (
             <div
               key={statusColumn.id}
-              className="flex flex-col rounded-2xl border border-border/60 bg-muted/30 backdrop-blur-sm p-3.5 shadow-sm transition-colors"
+              className="flex flex-col rounded-2xl border border-border/60 bg-muted/40 p-3.5 shadow-sm transition-colors"
             >
               {/* Column Header */}
               <div className="flex items-center justify-between pb-3 px-1 border-b border-border/40 mb-3">
@@ -248,19 +249,31 @@ export function KanbanBoard({
                   >
                     {columnTasks.map((task, index) => (
                       <Draggable key={task.id} draggableId={task.id} index={index}>
-                        {(dragProvided, dragSnapshot) => (
-                          <div
-                            ref={dragProvided.innerRef}
-                            {...dragProvided.draggableProps}
-                            {...dragProvided.dragHandleProps}
-                          >
-                            <TaskCard
-                              task={task}
-                              members={members}
-                              isDragging={dragSnapshot.isDragging}
-                            />
-                          </div>
-                        )}
+                        {(dragProvided, dragSnapshot) => {
+                          const child = (
+                            <div
+                              ref={dragProvided.innerRef}
+                              {...dragProvided.draggableProps}
+                              {...dragProvided.dragHandleProps}
+                              style={{
+                                ...dragProvided.draggableProps.style,
+                                ...(dragSnapshot.isDragging ? { zIndex: 99999 } : {}),
+                              }}
+                            >
+                              <TaskCard
+                                task={task}
+                                members={members}
+                                isDragging={dragSnapshot.isDragging}
+                              />
+                            </div>
+                          )
+
+                          if (dragSnapshot.isDragging && typeof document !== "undefined") {
+                            return createPortal(child, document.body)
+                          }
+
+                          return child
+                        }}
                       </Draggable>
                     ))}
                     {provided.placeholder}

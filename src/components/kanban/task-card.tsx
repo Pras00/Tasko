@@ -96,10 +96,10 @@ export function TaskCard({ task, members, isDragging }: TaskCardProps) {
   return (
     <>
       <div
-        className={`group relative rounded-2xl border bg-card p-4 transition-all duration-200 select-none ${
+        className={`group relative rounded-2xl border bg-card p-4 select-none ${
           isDragging
-            ? "border-indigo-500 shadow-xl shadow-indigo-500/20 rotate-1 scale-105 opacity-95"
-            : "border-border/70 hover:border-border hover:shadow-md hover:shadow-black/5"
+            ? "border-indigo-500 shadow-2xl shadow-indigo-500/25 ring-2 ring-indigo-500/40 cursor-grabbing bg-card"
+            : "border-border/70 hover:border-border hover:shadow-md hover:shadow-black/5 transition-all duration-150 cursor-grab"
         }`}
       >
         {/* Card Header: Priority badge & Quick Menu */}
