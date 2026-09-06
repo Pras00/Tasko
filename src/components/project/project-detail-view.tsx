@@ -21,6 +21,7 @@ import { deleteProject } from "@/actions/project-actions"
 import { toast } from "sonner"
 import { ProjectRole, TaskStatus, TaskPriority } from "@prisma/client"
 import { PROJECT_ROLES, TASK_PRIORITIES } from "@/lib/constants"
+import { ConfirmDialog } from "@/components/ui/confirm-dialog"
 
 interface ProjectDetailViewProps {
   project: {
@@ -78,21 +79,24 @@ export function ProjectDetailView({ project }: ProjectDetailViewProps) {
   const totalCount = project.tasks.length
   const progressPercent = totalCount > 0 ? Math.round((completedCount / totalCount) * 100) : 0
 
-  const handleDeleteProject = async () => {
-    if (!confirm(`Are you sure you want to delete "${project.name}"? This action cannot be undone.`)) {
-      return
-    }
+  const [deleteConfirmOpen, setDeleteConfirmOpen] = React.useState(false)
+  const [isDeleting, setIsDeleting] = React.useState(false)
 
+  const handleDeleteConfirm = async () => {
     try {
+      setIsDeleting(true)
       const res = await deleteProject(project.id)
       if (res.success) {
         toast.success(res.message)
+        setDeleteConfirmOpen(false)
         router.push("/projects")
       } else {
         toast.error(res.message)
       }
     } catch {
       toast.error("Failed to delete project")
+    } finally {
+      setIsDeleting(false)
     }
   }
 
@@ -156,8 +160,8 @@ export function ProjectDetailView({ project }: ProjectDetailViewProps) {
               <Button
                 variant="ghost"
                 size="icon"
-                onClick={handleDeleteProject}
-                className="rounded-xl h-9 w-9 text-muted-foreground hover:text-rose-600 hover:bg-rose-500/10"
+                onClick={() => setDeleteConfirmOpen(true)}
+                className="rounded-xl h-9 w-9 text-muted-foreground hover:text-rose-600 hover:bg-rose-500/10 cursor-pointer"
                 title="Delete Project"
               >
                 <Trash2 className="w-4 h-4" />
@@ -269,6 +273,20 @@ export function ProjectDetailView({ project }: ProjectDetailViewProps) {
         filterQuery={searchQuery}
         filterPriority={priorityFilter}
         filterAssignee={assigneeFilter}
+      />
+
+      <ConfirmDialog
+        open={deleteConfirmOpen}
+        onOpenChange={setDeleteConfirmOpen}
+        title="Delete Project"
+        description={
+          <>
+            Are you sure you want to delete <strong className="text-foreground font-semibold">&ldquo;{project.name}&rdquo;</strong>? This action cannot be undone and will permanently remove all associated tasks and member assignments.
+          </>
+        }
+        confirmText="Delete Project"
+        isLoading={isDeleting}
+        onConfirm={handleDeleteConfirm}
       />
     </div>
   )

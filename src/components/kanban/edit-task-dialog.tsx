@@ -18,6 +18,7 @@ import { toast } from "sonner"
 import { Trash2, Loader2 } from "lucide-react"
 import { TaskStatus, TaskPriority } from "@prisma/client"
 import { TASK_STATUSES, TASK_PRIORITIES } from "@/lib/constants"
+import { ConfirmDialog } from "@/components/ui/confirm-dialog"
 
 interface EditTaskDialogProps {
   task: {
@@ -63,6 +64,7 @@ export function EditTaskDialog({
   )
   const [isLoading, setIsLoading] = React.useState(false)
   const [isDeleting, setIsDeleting] = React.useState(false)
+  const [deleteConfirmOpen, setDeleteConfirmOpen] = React.useState(false)
 
   const [prevTask, setPrevTask] = React.useState(task)
   if (task !== prevTask) {
@@ -107,15 +109,14 @@ export function EditTaskDialog({
     }
   }
 
-  const handleDelete = async () => {
-    if (!confirm("Are you sure you want to delete this task?")) return
-
+  const handleDeleteConfirm = async () => {
     try {
       setIsDeleting(true)
       const res = await deleteTask(task.id)
 
       if (res.success) {
         toast.success(res.message)
+        setDeleteConfirmOpen(false)
         onOpenChange(false)
         router.refresh()
       } else {
@@ -233,8 +234,8 @@ export function EditTaskDialog({
               type="button"
               variant="ghost"
               disabled={isDeleting}
-              onClick={handleDelete}
-              className="text-xs text-rose-600 dark:text-rose-400 hover:bg-rose-500/10 gap-1.5 rounded-xl"
+              onClick={() => setDeleteConfirmOpen(true)}
+              className="text-xs text-rose-600 dark:text-rose-400 hover:bg-rose-500/10 gap-1.5 rounded-xl cursor-pointer"
             >
               {isDeleting ? (
                 <Loader2 className="w-3.5 h-3.5 animate-spin" />
@@ -256,7 +257,7 @@ export function EditTaskDialog({
               <Button
                 type="submit"
                 disabled={isLoading}
-                className="rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-xs gap-1.5"
+                className="rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-xs gap-1.5 cursor-pointer"
               >
                 {isLoading ? (
                   <>
@@ -271,6 +272,20 @@ export function EditTaskDialog({
           </DialogFooter>
         </form>
       </DialogContent>
+
+      <ConfirmDialog
+        open={deleteConfirmOpen}
+        onOpenChange={setDeleteConfirmOpen}
+        title="Delete Task"
+        description={
+          <>
+            Are you sure you want to delete <strong className="text-foreground font-semibold">&ldquo;{task.title}&rdquo;</strong>? This action cannot be undone and will permanently remove this task.
+          </>
+        }
+        confirmText="Delete Task"
+        isLoading={isDeleting}
+        onConfirm={handleDeleteConfirm}
+      />
     </Dialog>
   )
 }

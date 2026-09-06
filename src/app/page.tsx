@@ -19,25 +19,26 @@ export default function LandingPage() {
       {/* Hero Section */}
       <section className="relative overflow-hidden pt-12 pb-20 md:pt-20 md:pb-28">
         {/* Background gradient decorative glow */}
-        <div className="pointer-events-none absolute -top-40 left-1/2 -translate-x-1/2 w-[700px] h-[400px] bg-gradient-to-tr from-indigo-500/20 via-violet-500/15 to-amber-400/20 blur-3xl opacity-70 -z-10 rounded-full" />
+        <div className="pointer-events-none absolute -top-40 left-1/2 -translate-x-1/2 w-175 h-100 bg-linear-to-tr from-indigo-500/20 via-violet-500/15 to-amber-400/20 blur-3xl opacity-70 -z-10 rounded-full" />
 
         <div className="container mx-auto max-w-6xl px-4 text-center sm:px-6">
           {/* Joyful Pill Badge */}
           <div className="inline-flex items-center gap-2 rounded-full border border-indigo-500/30 bg-indigo-500/10 px-3.5 py-1 text-xs font-semibold text-indigo-600 dark:text-indigo-400 shadow-sm backdrop-blur-sm mb-6">
             <Sparkles className="w-3.5 h-3.5" />
-            <span>Introducing Tasko 2.0 • Joyful Project Management</span>
+            <span>Introducing Tasko • Joyful Project Management</span>
           </div>
 
           <h1 className="text-4xl font-black tracking-tight sm:text-6xl lg:text-7xl">
             Organize tasks with{" "}
-            <span className="bg-gradient-to-r from-indigo-600 via-violet-600 to-pink-500 dark:from-indigo-400 dark:via-purple-300 dark:to-pink-400 bg-clip-text text-transparent">
+            <span className="bg-linear-to-r from-indigo-600 via-violet-600 to-pink-500 dark:from-indigo-400 dark:via-purple-300 dark:to-pink-400 bg-clip-text text-transparent">
               clarity & joy.
             </span>
           </h1>
 
           <p className="mx-auto mt-6 max-w-2xl text-base sm:text-lg text-muted-foreground leading-relaxed">
-            Tasko gives teams a modern, agile workspace inspired by Mini Trello. Plan sprints,
-            drag cards across Kanban workflows, assign team members, and track deadlines with ease.
+            Tasko gives teams a modern, agile workspace inspired by Mini Trello.
+            Plan sprints, drag cards across Kanban workflows, assign team
+            members, and track deadlines with ease.
           </p>
 
           {/* CTA Buttons */}
@@ -70,7 +71,8 @@ export default function LandingPage() {
               </div>
               <h3 className="font-bold text-sm">Interactive Kanban</h3>
               <p className="mt-1 text-xs text-muted-foreground">
-                Move tasks across To Do, In Progress, In Review, and Done with smooth drag-and-drop.
+                Move tasks across To Do, In Progress, In Review, and Done with
+                smooth drag-and-drop.
               </p>
             </div>
 
@@ -80,7 +82,8 @@ export default function LandingPage() {
               </div>
               <h3 className="font-bold text-sm">Team Collaboration</h3>
               <p className="mt-1 text-xs text-muted-foreground">
-                Assign teammates, manage roles (Owner, Admin, Member), and ensure clear ownership.
+                Assign teammates, manage roles (Owner, Admin, Member), and
+                ensure clear ownership.
               </p>
             </div>
 
@@ -90,7 +93,8 @@ export default function LandingPage() {
               </div>
               <h3 className="font-bold text-sm">Deadline Awareness</h3>
               <p className="mt-1 text-xs text-muted-foreground">
-                Stay ahead with smart alerts for due dates, overdue badges, and urgency priority flags.
+                Stay ahead with smart alerts for due dates, overdue badges, and
+                urgency priority flags.
               </p>
             </div>
 
@@ -100,7 +104,8 @@ export default function LandingPage() {
               </div>
               <h3 className="font-bold text-sm">Secure & Reliable</h3>
               <p className="mt-1 text-xs text-muted-foreground">
-                Strict server-side role validation, database integrity with Prisma ORM, and safe auth.
+                Strict server-side role validation, database integrity with
+                Prisma ORM, and safe auth.
               </p>
             </div>
           </div>
@@ -109,18 +114,24 @@ export default function LandingPage() {
 
       {/* Footer */}
       <footer className="mt-auto border-t border-border/40 py-8 text-center text-xs text-muted-foreground">
-        <div className="container mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-4 max-w-6xl">
-          <p>© {new Date().getFullYear()} Tasko. Built with Next.js, Prisma, Tailwind v4 & shadcn/ui.</p>
-          <div className="flex items-center gap-4">
+        <div className="container mx-auto px-4 flex flex-col items-center justify-between gap-2 max-w-6xl">
+          <p>
+            © {new Date().getFullYear()} Tasko | Kelola tugasmu dengan mudah.
+          </p>
+          <p>
+            Hak Cipta Dilindungi Undang-Undang · Syarat Ketentuan · Kebijakan
+            Privasi · Hubungi Kami
+          </p>
+          {/* <div className="flex items-center gap-4">
             <Link href="/login" className="hover:underline">
               Log In
             </Link>
             <Link href="/register" className="hover:underline">
               Register
             </Link>
-          </div>
+          </div> */}
         </div>
       </footer>
     </div>
-  )
+  );
 }

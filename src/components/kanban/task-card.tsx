@@ -17,6 +17,7 @@ import { TASK_PRIORITIES, TASK_STATUSES } from "@/lib/constants"
 import { updateTaskStatusAndOrder, deleteTask } from "@/actions/task-actions"
 import { toast } from "sonner"
 import { EditTaskDialog } from "@/components/kanban/edit-task-dialog"
+import { ConfirmDialog } from "@/components/ui/confirm-dialog"
 
 interface TaskCardProps {
   task: {
@@ -66,6 +67,9 @@ export function TaskCard({ task, members, isDragging }: TaskCardProps) {
     ? task.assignee.name.split(" ").map((n) => n[0]).join("").toUpperCase().slice(0, 2)
     : "U"
 
+  const [deleteConfirmOpen, setDeleteConfirmOpen] = React.useState(false)
+  const [isDeleting, setIsDeleting] = React.useState(false)
+
   const handleQuickStatusChange = async (newStatus: TaskStatus) => {
     try {
       const res = await updateTaskStatusAndOrder(task.id, newStatus, task.order)
@@ -79,17 +83,20 @@ export function TaskCard({ task, members, isDragging }: TaskCardProps) {
     }
   }
 
-  const handleDelete = async () => {
-    if (!confirm("Are you sure you want to delete this task?")) return
+  const handleDeleteConfirm = async () => {
     try {
+      setIsDeleting(true)
       const res = await deleteTask(task.id)
       if (res.success) {
         toast.success(res.message)
+        setDeleteConfirmOpen(false)
       } else {
         toast.error(res.message)
       }
     } catch {
       toast.error("Failed to delete task")
+    } finally {
+      setIsDeleting(false)
     }
   }
 
@@ -146,7 +153,7 @@ export function TaskCard({ task, members, isDragging }: TaskCardProps) {
 
                 <DropdownMenuSeparator />
                 <DropdownMenuItem
-                  onClick={handleDelete}
+                  onClick={() => setDeleteConfirmOpen(true)}
                   className="cursor-pointer gap-2 text-rose-600 focus:text-rose-600 focus:bg-rose-500/10 text-xs"
                 >
                   <Trash2 className="w-3.5 h-3.5" />
@@ -219,6 +226,20 @@ export function TaskCard({ task, members, isDragging }: TaskCardProps) {
         members={members}
         open={editOpen}
         onOpenChange={setEditOpen}
+      />
+
+      <ConfirmDialog
+        open={deleteConfirmOpen}
+        onOpenChange={setDeleteConfirmOpen}
+        title="Delete Task"
+        description={
+          <>
+            Are you sure you want to delete <strong className="text-foreground font-semibold">&ldquo;{task.title}&rdquo;</strong>? This action cannot be undone.
+          </>
+        }
+        confirmText="Delete Task"
+        isLoading={isDeleting}
+        onConfirm={handleDeleteConfirm}
       />
     </>
   )
