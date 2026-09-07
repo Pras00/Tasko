@@ -15,19 +15,12 @@ interface LogoProps {
 export function Logo({
   showText = true,
   className = "",
-  interactive = false,
   size = "md",
 }: LogoProps) {
-  const { resolvedTheme, setTheme } = useTheme()
+  const { resolvedTheme } = useTheme()
   const mounted = useMounted()
 
   const isDark = mounted && resolvedTheme === "dark"
-
-  const toggleTheme = () => {
-    if (interactive) {
-      setTheme(isDark ? "light" : "dark")
-    }
-  }
 
   const iconSizes = {
     sm: "w-8 h-8",
@@ -43,11 +36,7 @@ export function Logo({
 
   return (
     <div
-      onClick={interactive ? toggleTheme : undefined}
-      className={`inline-flex items-center gap-2.5 select-none ${
-        interactive ? "cursor-pointer group" : ""
-      } ${className}`}
-      title={interactive ? "Click to switch Light / Dark theme" : undefined}
+      className={`inline-flex items-center gap-2.5 select-none ${className}`}
     >
       {/* Bespoke Tasko Geometric Emblem */}
       <motion.div

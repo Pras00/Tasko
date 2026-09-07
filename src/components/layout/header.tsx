@@ -15,9 +15,9 @@ export function Header() {
   return (
     <header className="sticky top-0 z-40 w-full border-b border-border/40 bg-background/80 backdrop-blur-md transition-colors">
       <div className="container mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
-        {/* Brand Logo with Sun/Moon Animated Switch */}
-        <Link href="/" className="transition-opacity hover:opacity-95">
-          <Logo interactive={true} />
+        {/* Brand Logo directing to Home ("/") */}
+        <Link href="/" className="inline-flex items-center transition-opacity hover:opacity-90">
+          <Logo />
         </Link>
 
         {/* Center Nav Links */}

@@ -7,7 +7,9 @@ export default function NotFound() {
   return (
     <div className="flex min-h-screen flex-col items-center justify-center bg-background px-4 text-center selection:bg-indigo-500/20">
       <div className="mb-6">
-        <Logo interactive={true} />
+        <Link href="/" className="inline-flex items-center transition-opacity hover:opacity-90">
+          <Logo />
+        </Link>
       </div>
 
       <div className="rounded-3xl border border-border/60 bg-card/60 backdrop-blur-md p-8 sm:p-12 max-w-md shadow-xl">

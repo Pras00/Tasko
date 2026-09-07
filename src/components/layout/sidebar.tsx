@@ -46,8 +46,8 @@ export function Sidebar({ className = "", onNavigate }: SidebarProps) {
     >
       {/* Header Logo */}
       <div className="flex items-center justify-between px-2 py-3 mb-4">
-        <Link href="/dashboard" onClick={onNavigate}>
-          <Logo interactive={true} />
+        <Link href="/" onClick={onNavigate} className="inline-flex items-center transition-opacity hover:opacity-90">
+          <Logo />
         </Link>
       </div>
 

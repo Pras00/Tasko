@@ -11,8 +11,8 @@ export default function AuthLayout({
     <div className="relative flex min-h-screen flex-col items-center justify-center bg-background px-4 py-12 selection:bg-indigo-500/20">
       {/* Top Navbar */}
       <div className="absolute top-6 left-6 right-6 flex items-center justify-between">
-        <Link href="/">
-          <Logo interactive={true} />
+        <Link href="/" className="inline-flex items-center transition-opacity hover:opacity-90">
+          <Logo />
         </Link>
         <ThemeToggle />
       </div>
