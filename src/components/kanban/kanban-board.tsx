@@ -1,7 +1,6 @@
 "use client"
 
 import * as React from "react"
-import { createPortal } from "react-dom"
 import {
   DragDropContext,
   Droppable,
@@ -97,6 +96,15 @@ export function KanbanBoard({
     })
   }, [tasks, filterQuery, filterPriority, filterAssignee])
 
+  const onDragStart = () => {
+    // Subtle haptic feedback on mobile touch devices when card lifts
+    if (typeof window !== "undefined" && "vibrate" in navigator) {
+      try {
+        navigator.vibrate(30)
+      } catch {}
+    }
+  }
+
   const onDragEnd = async (result: DropResult) => {
     const { destination, source, draggableId } = result
 
@@ -165,7 +173,7 @@ export function KanbanBoard({
 
   if (!isMounted) {
     return (
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 items-start pb-8">
         {TASK_STATUSES.map((status) => (
           <div
             key={status.id}
@@ -184,7 +192,7 @@ export function KanbanBoard({
   }
 
   return (
-    <DragDropContext onDragEnd={onDragEnd}>
+    <DragDropContext onDragStart={onDragStart} onDragEnd={onDragEnd}>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 items-start pb-8">
         {TASK_STATUSES.map((statusColumn) => {
           const columnTasks = filteredTasks
@@ -249,31 +257,23 @@ export function KanbanBoard({
                   >
                     {columnTasks.map((task, index) => (
                       <Draggable key={task.id} draggableId={task.id} index={index}>
-                        {(dragProvided, dragSnapshot) => {
-                          const child = (
-                            <div
-                              ref={dragProvided.innerRef}
-                              {...dragProvided.draggableProps}
-                              {...dragProvided.dragHandleProps}
-                              style={{
-                                ...dragProvided.draggableProps.style,
-                                ...(dragSnapshot.isDragging ? { zIndex: 99999 } : {}),
-                              }}
-                            >
-                              <TaskCard
-                                task={task}
-                                members={members}
-                                isDragging={dragSnapshot.isDragging}
-                              />
-                            </div>
-                          )
-
-                          if (dragSnapshot.isDragging && typeof document !== "undefined") {
-                            return createPortal(child, document.body)
-                          }
-
-                          return child
-                        }}
+                        {(dragProvided, dragSnapshot) => (
+                          <div
+                            ref={dragProvided.innerRef}
+                            {...dragProvided.draggableProps}
+                            {...dragProvided.dragHandleProps}
+                            style={{
+                              ...dragProvided.draggableProps.style,
+                              ...(dragSnapshot.isDragging ? { zIndex: 99999 } : {}),
+                            }}
+                          >
+                            <TaskCard
+                              task={task}
+                              members={members}
+                              isDragging={dragSnapshot.isDragging}
+                            />
+                          </div>
+                        )}
                       </Draggable>
                     ))}
                     {provided.placeholder}
@@ -307,3 +307,4 @@ export function KanbanBoard({
     </DragDropContext>
   )
 }
+

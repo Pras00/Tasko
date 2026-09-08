@@ -103,17 +103,17 @@ export function TaskCard({ task, members, isDragging }: TaskCardProps) {
   return (
     <>
       <div
-        className={`group relative rounded-2xl border bg-card p-4 select-none ${
+        className={`group relative rounded-2xl border bg-card p-4 select-none touch-manipulation transition-all duration-150 ${
           isDragging
-            ? "border-indigo-500 shadow-2xl shadow-indigo-500/25 ring-2 ring-indigo-500/40 cursor-grabbing bg-card"
-            : "border-border/70 hover:border-border hover:shadow-md hover:shadow-black/5 transition-all duration-150 cursor-grab"
+            ? "border-indigo-500 shadow-2xl shadow-indigo-500/25 ring-2 ring-indigo-500/40 cursor-grabbing bg-card scale-[1.03] rotate-[1deg] z-50"
+            : "border-border/70 hover:border-border hover:shadow-md hover:shadow-black/5 cursor-grab active:cursor-grabbing"
         }`}
       >
         {/* Card Header: Priority badge & Quick Menu */}
         <div className="flex items-center justify-between gap-2 mb-2.5">
           <Badge
             variant="outline"
-            className={`text-[10px] font-bold px-2 py-0.5 rounded-lg uppercase tracking-wider ${priorityMeta?.badgeClass}`}
+            className={`text-[10px] font-bold px-2 py-0.5 rounded-lg uppercase tracking-wider shrink-0 ${priorityMeta?.badgeClass}`}
           >
             {priorityMeta?.label}
           </Badge>
